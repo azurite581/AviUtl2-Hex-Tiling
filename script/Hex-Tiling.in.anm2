@@ -1,0 +1,76 @@
+--information:${INFO} ${VERSION} by ${AUTHOR}
+--label:加工
+--group:タイル設定,true
+---$track:サイズ
+---min=1
+---max=4000
+---step=0.1
+local size = 100
+
+---$track:タイルサイズ
+---min=50
+---max=200
+---step=0.1
+local tile_size = 100
+
+---$track:回転強度
+---min=-100
+---max=100
+---step=0.01
+local rot_strength = 0
+
+---$track:コントラスト補正
+---min=50
+---max=100
+---step=0.01
+local r = 75
+
+---$check:重み表示
+local show_weights = 0
+
+---$file:画像ファイル
+local img_path = ""
+
+--group
+--group:その他,false
+---$value:PI
+local PI = {}
+--group
+
+--[[pixelshader@psmain:
+---$include "Hex-Tiling.hlsl"
+]]
+
+local function as_number(x, d)
+	if type(x) == "boolean" then return x and 1 or 0
+    elseif type(x) == "number" then return x ~= 0 and 1 or 0
+	else return d end
+end
+
+size = math.max(tonumber(PI[1]) or size, 1)
+tile_size = math.max(tonumber(PI[2]) or tile_size, 1)
+rot_strength = tonumber(PI[3]) or rot_strength
+r = math.max(math.min(tonumber(PI[4]) or r, 100), 50)
+show_weights = as_number(PI[5]) or show_weights
+img_path = PI[6] or img_path
+
+if img_path == "" then
+    obj.pixelshader("psmain", "object", {"object"},
+    {
+        obj.w, obj.h, size / 100, tile_size / 100,
+        rot_strength / 100, r / 100, show_weights
+    },
+    "copy",
+    "loop"
+)
+else
+    obj.copybuffer("tempbuffer", "image:"..img_path)
+    obj.pixelshader("psmain", "object", {"tempbuffer"},
+        {
+            obj.w, obj.h, size / 100, tile_size / 100,
+            rot_strength / 100, r / 100, show_weights
+        },
+        "copy",
+        "loop"
+    )
+end

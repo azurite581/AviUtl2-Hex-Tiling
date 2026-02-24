@@ -1,0 +1,124 @@
+name: Release
+
+run-name: Release
+on:
+  push:
+    tags:
+    - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  release:
+    name: Release
+    runs-on: windows-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Get aulua latest tag name
+      id: aulua_latest_tag
+      run: |
+        $tag = gh release view --repo karoterra/aviutl2-aulua --json tagName --jq .tagName
+        "name=$tag" >> $env:GITHUB_OUTPUT
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Restore aulua
+      id: restore-aulua
+      uses: actions/cache/restore@v5
+      with:
+        path: ./aulua
+        key: aulua-${{ steps.aulua_latest_tag.outputs.name }}
+
+    - name: Download aulua
+      if: steps.restore-aulua.outputs.cache-hit != 'true'
+      uses: robinraju/release-downloader@v1
+      with:
+        repository: "karoterra/aviutl2-aulua"
+        latest: true
+        fileName: '*.zip'
+        out-file-path: "aulua"
+        extract: true
+
+    - name: Cache aulua
+      if: steps.restore-aulua.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v5
+      with:
+        path: ./aulua
+        key: aulua-${{ steps.aulua_latest_tag.outputs.name }}
+
+    - name: add aulua to the PATH
+      run: |
+        cd .\aulua
+        echo "$PWD" >> $env:GITHUB_PATH
+
+    - name: Get aviutl2-cli latest tag name
+      id: aviutl2-cli_latest_tag
+      run: |
+        $tag = gh release view --repo sevenc-nanashi/aviutl2-cli --json tagName --jq .tagName
+        "name=$tag" >> $env:GITHUB_OUTPUT
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Restore aviutl2-cli
+      id: restore-aviutl2-cli
+      uses: actions/cache/restore@v5
+      with:
+        path: ./aviutl2-cli
+        key: aviutl2-cli-${{ steps.aviutl2-cli_latest_tag.outputs.name }}
+
+    - name: Download aviutl2-cli
+      if: steps.restore-aviutl2-cli.outputs.cache-hit != 'true'
+      uses: robinraju/release-downloader@v1
+      with:
+        repository: "sevenc-nanashi/aviutl2-cli"
+        latest: true
+        fileName: '*.exe'
+        out-file-path: "aviutl2-cli"
+
+    - name: Cache aviutl2-cli
+      if: steps.restore-aviutl2-cli.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: ./aviutl2-cli
+        key: aviutl2-cli-${{ steps.aviutl2-cli_latest_tag.outputs.name }}
+
+    - name: add aviutl2-cli to the PATH
+      run: |
+        cd .\aviutl2-cli
+        Copy-Item *.exe au2.exe
+        echo "$PWD" >> $env:GITHUB_PATH
+
+    - name: Extract version
+      id: extract-version
+      run: |
+        $version = "${{ github.ref_name }}".TrimStart('v')
+        echo "version=$version" >> $env:GITHUB_OUTPUT
+
+    - name: Build
+      run: |
+        mkdir release
+        au2 release --set-version "$env:VERSION"
+      env:
+        VERSION: ${{ steps.extract-version.outputs.version }}
+
+    - name: Extract a specific version from the Changelog
+      run: |
+        cd .\tool
+        dotnet ChangelogExtract.cs -- ..\CHANGELOG.md ..\EXTRACTED.md --semver "$env:VERSION"
+      env:
+        VERSION: ${{ steps.extract-version.outputs.version }}
+
+    - name: Create release notes
+      run: |
+        Move-Item -Path release\*.au2pkg.zip -Destination .\
+        gh release create "$env:VERSION" --notes-file EXTRACTED.md "*.au2pkg.zip"
+      env:
+        VERSION: ${{ github.ref_name }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

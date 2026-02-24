@@ -1,0 +1,17 @@
+project:
+  variables:
+    AUTHOR: azurite
+
+build:
+  out_dir: ../out_script
+
+install:
+  out_dir:
+
+scripts:
+  - name: Hex-Tiling.anm2
+    sources:
+      - path: Hex-Tiling.in.anm2
+        variables:
+          VERSION: v0.1.0
+          INFO: Hex-Tiling for AviUtl2

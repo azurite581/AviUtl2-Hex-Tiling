@@ -1,0 +1,26 @@
+#:schema ./.aviutl2-cli/aviutl2.schema.json
+# 設定ファイルについては https://github.com/sevenc-nanashi/aviutl2-cli を参照してください。
+[project]
+id = "hex-tiling"
+name = "Hex-Tiling"
+version = "0.1.0"
+
+[artifacts.Hex-Tiling_anm2]
+build = "cd ./script && aulua build"
+source = "./out_script/Hex-Tiling.anm2"
+destination = "Script/Hex-Tiling.anm2"
+
+[artifacts.English_Hex-Tiling_aul2]
+source = "./translations/English.Hex-Tiling.aul2"
+destination = "Language/English.Hex-Tiling.aul2"
+
+[development]
+aviutl2_version = "latest"
+
+[preview]
+
+[release]
+output_dir = "release"
+package_template = "package.txt"
+zip_name = "{name}-v{version}"
+include = ["Hex-Tiling_anm2", "English_Hex-Tiling_aul2"]
