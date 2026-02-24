@@ -2,8 +2,8 @@
 
 ![Hex-Tiling](assets/Hex-Tiling.png)
 
-[Practical Real-Time Hex-Tiling](https://jcgt.org/published/0011/03/05/) の実装を [AviUtl2](https://spring-fragrance.mints.ne.jp/aviutl/) に移植したものです。  
-テクスチャの繰り返しを目立ちにくくするため、六角形グリッド上でサンプリングを再配置・ブレンドするエフェクトです。
+テクスチャの繰り返しを目立ちにくくするため、六角形グリッド上でサンプリングを再配置・ブレンドするスクリプトです。
+[Practical Real-Time Hex-Tiling](https://jcgt.org/published/0011/03/05/) の実装を [AviUtl2](https://spring-fragrance.mints.ne.jp/aviutl/) に移植したものになります。
 
 ## 動作環境
 
