@@ -134,7 +134,7 @@ SOFTWARE.
 
 ## ライセンス
 
-[Practical Real-Time Hex-Tiling](https://jcgt.org/published/0011/03/05/) の実装（主に HLSL シェーダー部分）はオリジナルに基づき、 [MIT License]() で提供されます。
+[Practical Real-Time Hex-Tiling](https://jcgt.org/published/0011/03/05/) の実装（主に HLSL シェーダー部分）はオリジナルに基づき、 MIT License で提供されます（ライセンス全文は HLSL ファイルに記載）。
 
 それ以外の部分は [MIT No Attribution License (MIT-0)](LICENSE.txt) に基づくものとします。
 

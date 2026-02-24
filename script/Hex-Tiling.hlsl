@@ -6,6 +6,7 @@ Mikkelsen (2022) "Practical Real-Time Hex-Tiling"
 - https://github.com/mmikk/hextile-demo
 
 MIT License
+
 Copyright (c) 2022 mmikk
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
