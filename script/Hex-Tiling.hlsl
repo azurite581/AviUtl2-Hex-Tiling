@@ -35,6 +35,7 @@ SamplerState samp : register(s0);
 
 cbuffer constant0 : register(b0) {
     float2 resolution;
+    float2 center;
     float size;
     float tileSize;
     float rotStrength;
@@ -187,7 +188,7 @@ void hex2colTex(
 
 float4 psmain(float4 pos : SV_Position, float2 uv : TEXCOORD) : SV_Target
 {
-    float2 st = (pos.xy - 0.5 * resolution) / min(resolution.x, resolution.y);
+    float2 st = (pos.xy - 0.5 * resolution - center) / min(resolution.x, resolution.y);
 
     float4 color;
     float3 weights;
