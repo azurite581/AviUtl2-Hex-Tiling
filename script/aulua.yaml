@@ -13,5 +13,5 @@ scripts:
     sources:
       - path: Hex-Tiling.in.anm2
         variables:
-          VERSION: v0.1.0
+          VERSION: v0.2.0
           INFO: Hex-Tiling for AviUtl2

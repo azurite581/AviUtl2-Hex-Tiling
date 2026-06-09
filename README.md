@@ -9,13 +9,25 @@
 
 [AviUtl ExEdit2](https://spring-fragrance.mints.ne.jp/aviutl/)
 
-- `beta34` で動作確認済み。
+- `beta49` で動作確認済み。
 
 ## インストール
+
+次のいずれかの方法でインストールできます。
+
+### AviUtl2 カタログを使う（推奨）
+
+本スクリプトは [aviutl2-catalog](https://github.com/Neosku/aviutl2-catalog) に登録済みです。 メインメニュー ➡️ パッケージ一覧 ➡️ スクリプト ➡️ Hex-Tiling からインストールしてください。
+
+### 手動インストール
 
 [Releases](https://github.com/azurite581/AviUtl2-Hex-Tiling/releases/latest) から `Hex-Tiling_v{version}.au2pkg.zip` をダウンロードし、AviUtl2 のプレビューにドラッグ&ドロップしてください。
 
 デフォルトでは `加工` カテゴリに配置されます。
+
+> [!Note]
+> ### For non-Japanese speaking users
+> Please download the translation files from [here](https://github.com/azurite581/aviutl2_translations_azurite/releases/latest).
 
 ## 使い方
 
@@ -33,6 +45,14 @@
 - #### タイルサイズ
 
   タイル 1 つあたりのサイズ。初期値は `100` です。
+
+- #### X
+
+  中心の X 座標。
+
+- #### Y
+
+  中心の Y 座標。
 
 - #### 回転強度
 
@@ -56,17 +76,19 @@
 パラメーターインジェクション用の入力欄です。以下の形式に沿って値を入力することで、各種パラメーターの値を上書きできます（実際に入力するときは波括弧は不要です）。
 
 ```lua
-{ size, tile_size, rot_strength, r, show_weights, img_path }
+{ size, tile_size, x, y, rot_strength, r, show_weights, img_path }
 ```
 
-|  | 説明 | 型 | 範囲 |
+| | 説明 | 型 | 範囲 |
 | :--- | :--- | :--- | :--- |
 | size | 全体のサイズ | number | 1 以上 |
 | tile_size | タイル 1 つあたりのサイズ | number | 1 以上 |
-| rot_strength | タイルの回転強度 | number |  |
+| x | 中心の X 座標 | number | |
+| y | 中心の Y 座標 | number | |
+| rot_strength | タイルの回転強度 | number | |
 | r | コントラスト補正係数 | number | [50, 100] |
 | show_weights | 重みを表示するかどうか | number または boolean | [0, 1] または false/true |
-| img_path | サンプリング元となる画像ファイルへの絶対パス | string |  |
+| img_path | サンプリング元となる画像ファイルへの絶対パス | string | |
 
 ## 使用したツール
 
